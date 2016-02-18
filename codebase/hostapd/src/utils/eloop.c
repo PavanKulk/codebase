@@ -916,7 +916,7 @@ void eloop_run(void)
 	if (rfds == NULL || wfds == NULL || efds == NULL)
 		goto out;
 #endif /* CONFIG_ELOOP_SELECT */
-	wpa_printf(MSG_ERROR, "Pavan edit: eloop.c: starting eloop run");
+	//wpa_printf(MSG_ERROR, "Pavan edit: eloop.c: starting eloop run");
 	while (!eloop.terminate &&
 	       (!dl_list_empty(&eloop.timeout) || eloop.readers.count > 0 ||
 		eloop.writers.count > 0 || eloop.exceptions.count > 0)) {
