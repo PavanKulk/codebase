@@ -16,6 +16,7 @@ httpserver :-
  - Note: Changes implemented in httpserver/libmicrohttpd-0.9.16/myhttpserver/myhttpserver.c
 
 Build & Compile method :-
+
 hostapd :-
  - Move to hostapd folder
  - Run make
@@ -27,6 +28,7 @@ httpserver :-
  - Run make install
 
 Running and checking the output :-
+
 hostapd :-
  - Move to hostapd folder
  - Run hostapd hostapd-minimal.conf
