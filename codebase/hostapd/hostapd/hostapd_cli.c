@@ -8,6 +8,9 @@
 
 #include "includes.h"
 #include <dirent.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
 
 #include "common/wpa_ctrl.h"
 #include "common/ieee802_11_defs.h"
@@ -16,6 +19,8 @@
 #include "utils/edit.h"
 #include "common/version.h"
 
+
+#define SHMSZ 4096
 
 static const char *const hostapd_cli_version =
 "hostapd_cli v" VERSION_STR "\n"
@@ -1343,13 +1348,17 @@ int main(int argc, char *argv[])
 	int c;
 	int daemonize = 0;
 
+        printf("In hostapd cli main\n");
+
 	if (os_program_init())
 		return -1;
 
 	for (;;) {
 		c = getopt(argc, argv, "a:BhG:i:p:P:s:v");
-		if (c < 0)
+		if (c < 0) {
 			break;
+                        printf("c<0 getting out of for loop\n");
+                }
 		switch (c) {
 		case 'a':
 			action_file = optarg;
@@ -1447,12 +1456,76 @@ int main(int argc, char *argv[])
 	if (daemonize && os_daemonize(pid_file))
 		return -1;
 
-	if (interactive)
+	/*if (interactive)
 		hostapd_cli_interactive();
 	else if (action_file)
 		hostapd_cli_action(ctrl_conn);
 	else
-		wpa_request(ctrl_conn, argc - optind, &argv[optind]);
+         	wpa_request(ctrl_conn, argc - optind, &argv[optind]);*/
+
+
+        //<shared memory implementation
+        char ch;
+        int shmid;
+        key_t key;
+        char *shm, *s;
+        char buf[4096];
+        size_t len;
+        int ret;
+        char *cmd = "STATUS";
+  
+        key = 5678;
+
+        printf("Variables initialized\n");
+
+        if ((shmid = shmget(key, SHMSZ, IPC_CREAT | 0666)) < 0) {
+            perror("shmget");
+            exit(1);
+        }
+
+        printf("Segment created\n");
+
+
+        if ((shm = shmat(shmid, NULL, 0)) == (char *) -1) {
+            perror("shmat");
+            exit(1);
+        }
+        printf("Segment attached to dataspace\n");
+
+        s = shm;
+
+        printf("s assigned to shm\n");
+
+        len = sizeof(buf)-1;
+        ret = wpa_ctrl_request(ctrl_conn, cmd, strlen(cmd), buf, &len,
+			       hostapd_cli_msg_cb);
+        buf[len] = '\0';
+        printf("Buffered received...\n");
+        printf("%s", buf);
+        
+        /*int i=0;
+        do {
+            *s = buf[i++];
+        } while(buf[i] != '\0');*/
+
+        s = memcpy(s, buf, len);
+        s[len] = '\0';
+        printf("Copied buffer = %s", s);
+        /*for (ch = 'a'; ch <= 'z'; ch++) {
+            *s++ = ch;
+            //printf("char added to array\n");
+        }*/
+        //printf("All chars added, terminating string with null\n");
+        //*s = '\0';
+        //printf("String added to memory\n");
+
+        printf("Waiting for the first character to change\n");
+        while (*shm != '*')
+            sleep(1);
+
+        //shared memory>
+
+        //hostapd_cli_list_interfaces(ctrl_conn);
 
 	os_free(ctrl_ifname);
 	eloop_destroy();
