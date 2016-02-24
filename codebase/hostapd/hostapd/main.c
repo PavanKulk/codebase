@@ -235,6 +235,10 @@ static int hostapd_driver_init(struct hostapd_iface *iface)
 		iface->extended_capa_len = capa.extended_capa_len;
 		iface->drv_max_acl_mac_addrs = capa.max_acl_mac_addrs;
 
+                //Pavan CSA support
+                iface->csa_supported = !!(capa.flags & WPA_DRIVER_FLAGS_AP_CSA);
+                //Pavan CSA support
+
 		triggs = wpa_get_wowlan_triggers(conf->wowlan_triggers, &capa);
 		if (triggs && hapd->driver->set_wowlan) {
 			if (hapd->driver->set_wowlan(hapd->drv_priv, triggs))

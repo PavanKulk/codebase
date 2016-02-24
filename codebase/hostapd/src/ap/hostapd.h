@@ -399,6 +399,10 @@ struct hostapd_iface {
 	/* lowest observed noise floor in dBm */
 	s8 lowest_nf;
 
+        //Pavan CSA support
+        unsigned int csa_supported:1;
+        //Pavan CSA support
+
 	/* channel utilization calculation */
 	u64 last_channel_time;
 	u64 last_channel_time_busy;

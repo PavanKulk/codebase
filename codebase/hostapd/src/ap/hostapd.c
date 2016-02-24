@@ -2831,8 +2831,11 @@ static int hostapd_fill_csa_settings(struct hostapd_data *hapd,
 	u8 chan, vht_bandwidth;
 
 	os_memset(&old_freq, 0, sizeof(old_freq));
-	if (!iface || !iface->freq || hapd->csa_in_progress)
+        //Pavan CSA support
+	//if (!iface || !iface->freq || hapd->csa_in_progress)
+        if (!iface || !iface->csa_supported || !iface->freq || hapd->csa_in_progress)
 		return -1;
+        //Pavan CSA support
 
 	switch (settings->freq_params.bandwidth) {
 	case 80:

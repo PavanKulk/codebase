@@ -4533,6 +4533,10 @@ static int wpa_supplicant_init_iface(struct wpa_supplicant *wpa_s,
 			capa.num_multichan_concurrent;
 		wpa_s->wmm_ac_supported = capa.wmm_ac_supported;
 
+                //Pavan CSA support
+                wpa_s->csa_supported = !!(capa.flags & WPA_DRIVER_FLAGS_AP_CSA);
+                //Pavan CSA support
+
 		if (capa.mac_addr_rand_scan_supported)
 			wpa_s->mac_addr_rand_supported |= MAC_ADDR_RAND_SCAN;
 		if (wpa_s->sched_scan_supported &&

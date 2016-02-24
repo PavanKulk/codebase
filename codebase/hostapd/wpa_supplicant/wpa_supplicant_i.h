@@ -974,6 +974,10 @@ struct wpa_supplicant {
 
 	unsigned int ext_work_id;
 
+        //Pavan CSA support
+        unsigned int csa_supported:1;
+        //Pavan CSA support
+
 	struct wpabuf *vendor_elem[NUM_VENDOR_ELEM_FRAMES];
 
 #ifdef CONFIG_TESTING_OPTIONS
