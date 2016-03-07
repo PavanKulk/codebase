@@ -80,6 +80,7 @@ connection.lo: connection.c /usr/include/stdc-predef.h internal.h \
  /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/rpc/netdb.h \
  /usr/include/x86_64-linux-gnu/bits/netdb.h /usr/include/arpa/inet.h \
  ../../src/include/plibc/plibc.h ../../src/include/microhttpd.h \
+ /usr/include/gnutls/gnutls.h /usr/include/gnutls/compat.h \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
@@ -306,6 +307,10 @@ internal.h:
 ../../src/include/plibc/plibc.h:
 
 ../../src/include/microhttpd.h:
+
+/usr/include/gnutls/gnutls.h:
+
+/usr/include/gnutls/compat.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/limits.h:
 

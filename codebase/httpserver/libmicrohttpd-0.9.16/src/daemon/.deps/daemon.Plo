@@ -80,14 +80,17 @@ daemon.lo: daemon.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/rpc/netdb.h \
  /usr/include/x86_64-linux-gnu/bits/netdb.h /usr/include/arpa/inet.h \
  ../../src/include/plibc/plibc.h internal.h \
- ../../src/include/microhttpd.h response.h connection.h memorypool.h \
+ ../../src/include/microhttpd.h /usr/include/gnutls/gnutls.h \
+ /usr/include/gnutls/compat.h response.h connection.h memorypool.h \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
- /usr/include/x86_64-linux-gnu/bits/xopen_lim.h /usr/include/poll.h \
+ /usr/include/x86_64-linux-gnu/bits/xopen_lim.h connection_https.h \
+ /usr/include/gcrypt.h /usr/include/gpg-error.h \
+ /usr/include/gcrypt-module.h /usr/include/poll.h \
  /usr/include/x86_64-linux-gnu/sys/poll.h \
  /usr/include/x86_64-linux-gnu/bits/poll.h \
  /usr/include/x86_64-linux-gnu/bits/poll2.h \
@@ -311,6 +314,10 @@ internal.h:
 
 ../../src/include/microhttpd.h:
 
+/usr/include/gnutls/gnutls.h:
+
+/usr/include/gnutls/compat.h:
+
 response.h:
 
 connection.h:
@@ -332,6 +339,14 @@ memorypool.h:
 /usr/include/x86_64-linux-gnu/bits/posix2_lim.h:
 
 /usr/include/x86_64-linux-gnu/bits/xopen_lim.h:
+
+connection_https.h:
+
+/usr/include/gcrypt.h:
+
+/usr/include/gpg-error.h:
+
+/usr/include/gcrypt-module.h:
 
 /usr/include/poll.h:
 

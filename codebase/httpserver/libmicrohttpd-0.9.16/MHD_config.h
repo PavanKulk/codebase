@@ -39,10 +39,10 @@
 #define HAVE_FSEEKO 1
 
 /* We have gnutls */
-#define HAVE_GNUTLS 0
+#define HAVE_GNUTLS true
 
 /* Define to 1 if you have the <gnutls/gnutls.h> header file. */
-/* #undef HAVE_GNUTLS_GNUTLS_H */
+#define HAVE_GNUTLS_GNUTLS_H 1
 
 /* Provides IPv6 headers */
 #define HAVE_INET6 1
@@ -141,7 +141,7 @@
 /* #undef HAVE_WS2TCPIP_H */
 
 /* disable HTTPS support */
-#define HTTPS_SUPPORT 0
+#define HTTPS_SUPPORT 1
 
 /* Defined if libcurl supports AsynchDNS */
 /* #undef LIBCURL_FEATURE_ASYNCHDNS */
@@ -283,6 +283,11 @@
 # ifndef WORDS_BIGENDIAN
 /* #  undef WORDS_BIGENDIAN */
 # endif
+#endif
+
+/* Enable large inode numbers on Mac OS X 10.5.  */
+#ifndef _DARWIN_USE_64_BIT_INODE
+# define _DARWIN_USE_64_BIT_INODE 1
 #endif
 
 /* Number of bits in a file offset, on hosts where this is settable. */

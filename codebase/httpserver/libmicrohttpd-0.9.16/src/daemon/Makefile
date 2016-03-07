@@ -42,8 +42,8 @@ am__append_2 = \
   md5.c md5.h \
   base64.c base64.h
 
-#am__append_3 = \
-#  connection_https.c connection_https.h
+am__append_3 = \
+  connection_https.c connection_https.h
 
 check_PROGRAMS = postprocessor_test$(EXEEXT) \
 	postprocessor_large_test$(EXEEXT) daemon_test$(EXEEXT)
@@ -92,7 +92,7 @@ am__libmicrohttpd_la_SOURCES_DIST = connection.c connection.h \
 	connection_https.c connection_https.h
 am__objects_1 = postprocessor.lo
 am__objects_2 = digestauth.lo md5.lo base64.lo
-#am__objects_3 = connection_https.lo
+am__objects_3 = connection_https.lo
 am_libmicrohttpd_la_OBJECTS = connection.lo reason_phrase.lo daemon.lo \
 	internal.lo memorypool.lo response.lo $(am__objects_1) \
 	$(am__objects_2) $(am__objects_3)
@@ -138,13 +138,13 @@ CTAGS = ctags
 am__tty_colors = \
 red=; grn=; lgn=; blu=; std=
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /root/httpserver/libmicrohttpd-0.9.16/missing --run aclocal-1.11
-AMTAR = ${SHELL} /root/httpserver/libmicrohttpd-0.9.16/missing --run tar
+ACLOCAL = ${SHELL} /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/missing --run aclocal-1.11
+AMTAR = ${SHELL} /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/missing --run tar
 AR = ar
 AS = as
-AUTOCONF = ${SHELL} /root/httpserver/libmicrohttpd-0.9.16/missing --run autoconf
-AUTOHEADER = ${SHELL} /root/httpserver/libmicrohttpd-0.9.16/missing --run autoheader
-AUTOMAKE = ${SHELL} /root/httpserver/libmicrohttpd-0.9.16/missing --run automake-1.11
+AUTOCONF = ${SHELL} /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/missing --run autoconf
+AUTOHEADER = ${SHELL} /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/missing --run autoheader
+AUTOMAKE = ${SHELL} /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/missing --run automake-1.11
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
@@ -179,8 +179,8 @@ LDFLAGS =
 LIBCURL = 
 LIBCURL_CPPFLAGS = 
 LIBGCRYPT_CFLAGS = 
-LIBGCRYPT_CONFIG = no
-LIBGCRYPT_LIBS = 
+LIBGCRYPT_CONFIG = /usr/bin/libgcrypt-config
+LIBGCRYPT_LIBS = -lgcrypt
 LIBOBJS = 
 LIBS = -lpthread 
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
@@ -190,9 +190,9 @@ LIB_VERSION_REVISION = 0
 LIPO = 
 LN_S = ln -s
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /root/httpserver/libmicrohttpd-0.9.16/missing --run makeinfo
+MAKEINFO = ${SHELL} /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/missing --run makeinfo
 MANIFEST_TOOL = :
-MHD_LIBDEPS = 
+MHD_LIBDEPS = -lgcrypt
 MHD_LIB_LDFLAGS = -export-dynamic -no-undefined
 MKDIR_P = /bin/mkdir -p
 NM = /usr/bin/nm -B
@@ -222,10 +222,10 @@ SHELL = /bin/bash
 STRIP = strip
 VERSION = 0.9.16
 _libcurl_config = 
-abs_builddir = /root/httpserver/libmicrohttpd-0.9.16/src/daemon
-abs_srcdir = /root/httpserver/libmicrohttpd-0.9.16/src/daemon
-abs_top_builddir = /root/httpserver/libmicrohttpd-0.9.16
-abs_top_srcdir = /root/httpserver/libmicrohttpd-0.9.16
+abs_builddir = /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/src/daemon
+abs_srcdir = /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/src/daemon
+abs_top_builddir = /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16
+abs_top_srcdir = /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_DUMPBIN = 
@@ -254,7 +254,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /root/httpserver/libmicrohttpd-0.9.16/install-sh
+install_sh = ${SHELL} /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -294,7 +294,7 @@ libmicrohttpd_la_LDFLAGS = \
   -version-info 23:0:13
 
 #AM_CFLAGS = --coverage
-#libmicrohttpd_la_LIBADD = -lgnutls 
+libmicrohttpd_la_LIBADD = -lgnutls -lgcrypt
 TESTS = $(check_PROGRAMS)
 daemon_test_SOURCES = \
   daemon_test.c

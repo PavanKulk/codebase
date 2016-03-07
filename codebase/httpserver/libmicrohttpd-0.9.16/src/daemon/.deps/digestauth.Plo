@@ -87,7 +87,8 @@ digestauth.lo: digestauth.c /usr/include/stdc-predef.h \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h internal.h \
- ../../src/include/microhttpd.h md5.h base64.h
+ ../../src/include/microhttpd.h /usr/include/gnutls/gnutls.h \
+ /usr/include/gnutls/compat.h md5.h base64.h
 
 /usr/include/stdc-predef.h:
 
@@ -322,6 +323,10 @@ digestauth.lo: digestauth.c /usr/include/stdc-predef.h \
 internal.h:
 
 ../../src/include/microhttpd.h:
+
+/usr/include/gnutls/gnutls.h:
+
+/usr/include/gnutls/compat.h:
 
 md5.h:
 

@@ -155,10 +155,10 @@ static int hostapd_driver_init(struct hostapd_iface *iface)
 	struct hostapd_data *hapd = iface->bss[0];
 	struct hostapd_bss_config *conf = hapd->conf;
 
-        FILE *fp;
-        fp = fopen("/root/httpserver/libmicrohttpd-0.9.16/doc/examples/params.txt", "w");
+        //FILE *fp;
+        //fp = fopen("/root/httpserver/libmicrohttpd-0.9.16/doc/examples/params.txt", "w");
 	u8 *b = conf->bssid;
-	wpa_printf(MSG_INFO, "Pavan edit: bssid = %u", hapd->conf->bssid);
+	/*wpa_printf(MSG_INFO, "Pavan edit: bssid = %u", hapd->conf->bssid);
 	wpa_printf(MSG_INFO, "Pavan edit: ifacename = %s", hapd->conf->iface);
 	wpa_printf(MSG_INFO, "Pavan edit: channel = %u", hapd->iconf->channel);
 
@@ -166,7 +166,7 @@ static int hostapd_driver_init(struct hostapd_iface *iface)
         fprintf(fp, "ifacename = %s\n", hapd->conf->iface);
         fprintf(fp, "bssid = %u\n", hapd->conf->bssid);
 
-        fclose(fp);
+        fclose(fp);*/
 	struct wpa_driver_capa capa;
 
 	if (hapd->driver == NULL || hapd->driver->hapd_init == NULL) {

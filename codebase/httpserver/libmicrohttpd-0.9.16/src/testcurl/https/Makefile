@@ -192,13 +192,13 @@ am__relativize = \
     dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
   done; \
   reldir="$$dir2"
-ACLOCAL = ${SHELL} /root/httpserver/libmicrohttpd-0.9.16/missing --run aclocal-1.11
-AMTAR = ${SHELL} /root/httpserver/libmicrohttpd-0.9.16/missing --run tar
+ACLOCAL = ${SHELL} /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/missing --run aclocal-1.11
+AMTAR = ${SHELL} /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/missing --run tar
 AR = ar
 AS = as
-AUTOCONF = ${SHELL} /root/httpserver/libmicrohttpd-0.9.16/missing --run autoconf
-AUTOHEADER = ${SHELL} /root/httpserver/libmicrohttpd-0.9.16/missing --run autoheader
-AUTOMAKE = ${SHELL} /root/httpserver/libmicrohttpd-0.9.16/missing --run automake-1.11
+AUTOCONF = ${SHELL} /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/missing --run autoconf
+AUTOHEADER = ${SHELL} /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/missing --run autoheader
+AUTOMAKE = ${SHELL} /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/missing --run automake-1.11
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
@@ -233,8 +233,8 @@ LDFLAGS =
 LIBCURL = 
 LIBCURL_CPPFLAGS = 
 LIBGCRYPT_CFLAGS = 
-LIBGCRYPT_CONFIG = no
-LIBGCRYPT_LIBS = 
+LIBGCRYPT_CONFIG = /usr/bin/libgcrypt-config
+LIBGCRYPT_LIBS = -lgcrypt
 LIBOBJS = 
 LIBS = -lpthread 
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
@@ -244,9 +244,9 @@ LIB_VERSION_REVISION = 0
 LIPO = 
 LN_S = ln -s
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /root/httpserver/libmicrohttpd-0.9.16/missing --run makeinfo
+MAKEINFO = ${SHELL} /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/missing --run makeinfo
 MANIFEST_TOOL = :
-MHD_LIBDEPS = 
+MHD_LIBDEPS = -lgcrypt
 MHD_LIB_LDFLAGS = -export-dynamic -no-undefined
 MKDIR_P = /bin/mkdir -p
 NM = /usr/bin/nm -B
@@ -276,10 +276,10 @@ SHELL = /bin/bash
 STRIP = strip
 VERSION = 0.9.16
 _libcurl_config = 
-abs_builddir = /root/httpserver/libmicrohttpd-0.9.16/src/testcurl/https
-abs_srcdir = /root/httpserver/libmicrohttpd-0.9.16/src/testcurl/https
-abs_top_builddir = /root/httpserver/libmicrohttpd-0.9.16
-abs_top_srcdir = /root/httpserver/libmicrohttpd-0.9.16
+abs_builddir = /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/src/testcurl/https
+abs_srcdir = /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/src/testcurl/https
+abs_top_builddir = /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16
+abs_top_srcdir = /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_DUMPBIN = 
@@ -308,7 +308,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /root/httpserver/libmicrohttpd-0.9.16/install-sh
+install_sh = ${SHELL} /root/codebase/codebase/httpserver/libmicrohttpd-0.9.16/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -347,7 +347,7 @@ tls_session_time_out_test_SOURCES = \
 tls_session_time_out_test_LDADD = \
   $(top_builddir)/src/testcurl/libcurl_version_check.a \
   $(top_builddir)/src/daemon/libmicrohttpd.la \
-   -lgnutls 
+   -lgnutls -lgcrypt
 
 tls_daemon_options_test_SOURCES = \
   tls_daemon_options_test.c \
@@ -356,7 +356,7 @@ tls_daemon_options_test_SOURCES = \
 tls_daemon_options_test_LDADD = \
   $(top_builddir)/src/testcurl/libcurl_version_check.a \
   $(top_builddir)/src/daemon/libmicrohttpd.la \
-   -lgnutls 
+   -lgnutls -lgcrypt
 
 tls_thread_mode_test_SOURCES = \
   tls_thread_mode_test.c \
@@ -365,7 +365,7 @@ tls_thread_mode_test_SOURCES = \
 tls_thread_mode_test_LDADD = \
   $(top_builddir)/src/testcurl/libcurl_version_check.a \
   $(top_builddir)/src/daemon/libmicrohttpd.la \
-   -lgnutls 
+   -lgnutls -lgcrypt
 
 tls_multi_thread_mode_test_SOURCES = \
   tls_multi_thread_mode_test.c \
@@ -374,7 +374,7 @@ tls_multi_thread_mode_test_SOURCES = \
 tls_multi_thread_mode_test_LDADD = \
   $(top_builddir)/src/testcurl/libcurl_version_check.a \
   $(top_builddir)/src/daemon/libmicrohttpd.la \
-   -lgnutls 
+   -lgnutls -lgcrypt
 
 tls_authentication_test_SOURCES = \
   tls_authentication_test.c \
@@ -383,7 +383,7 @@ tls_authentication_test_SOURCES = \
 tls_authentication_test_LDADD = \
   $(top_builddir)/src/testcurl/libcurl_version_check.a \
   $(top_builddir)/src/daemon/libmicrohttpd.la \
-   -lgnutls 
+   -lgnutls -lgcrypt
 
 mhds_session_info_test_SOURCES = \
   mhds_session_info_test.c \
@@ -392,7 +392,7 @@ mhds_session_info_test_SOURCES = \
 mhds_session_info_test_LDADD = \
   $(top_builddir)/src/testcurl/libcurl_version_check.a \
   $(top_builddir)/src/daemon/libmicrohttpd.la \
-   -lgnutls 
+   -lgnutls -lgcrypt
 
 mhds_multi_daemon_test_SOURCES = \
   mhds_multi_daemon_test.c \
@@ -401,7 +401,7 @@ mhds_multi_daemon_test_SOURCES = \
 mhds_multi_daemon_test_LDADD = \
   $(top_builddir)/src/testcurl/libcurl_version_check.a \
   $(top_builddir)/src/daemon/libmicrohttpd.la \
-   -lgnutls 
+   -lgnutls -lgcrypt
 
 mhds_get_test_SOURCES = \
   mhds_get_test.c \
@@ -410,7 +410,7 @@ mhds_get_test_SOURCES = \
 mhds_get_test_LDADD = \
   $(top_builddir)/src/testcurl/libcurl_version_check.a \
   $(top_builddir)/src/daemon/libmicrohttpd.la \
-   -lgnutls 
+   -lgnutls -lgcrypt
 
 mhds_get_test_select_SOURCES = \
   mhds_get_test_select.c \
@@ -419,7 +419,7 @@ mhds_get_test_select_SOURCES = \
 mhds_get_test_select_LDADD = \
   $(top_builddir)/src/testcurl/libcurl_version_check.a \
   $(top_builddir)/src/daemon/libmicrohttpd.la \
-   -lgnutls 
+   -lgnutls -lgcrypt
 
 all: all-recursive
 

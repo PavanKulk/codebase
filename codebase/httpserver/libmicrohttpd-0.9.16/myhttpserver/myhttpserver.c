@@ -12,6 +12,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include <signal.h>
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -130,10 +131,34 @@ main ()
                              &answer_to_connection, (void *) PAGE, MHD_OPTION_END);
     if (NULL == daemon)
       return 1;
+    
+    pid_t pid;
+    key_t MyKey;
+    int ShmID;
+    pid_t *ShmPTR;
+
+    MyKey   = 1234;
+    //ShmID   = shmget(MyKey, sizeof(pid_t), 0666);
+    if ((ShmID   = shmget(MyKey, sizeof(pid_t), 0666)) < 0) {
+        perror("shmget");
+        exit(1);
+    }
+
+
+    ShmPTR  = (pid_t *) shmat(ShmID, NULL, 0);
+    pid     = *ShmPTR;                
+
+    printf("Received pid is %d\n",pid);
+    printf("Sending signal to hostapd_cli...\n");
+    kill(pid, SIGINT);
+    printf("Channel set command Signal sent to hostapd_cli\n");
+    sleep(1);
+    kill(pid, SIGQUIT);
+    printf("Channel get command Signal sent to hostapd_cli\n");
 
     (void) getchar ();
 
-    *shm = '*';
+    //*shm = '*';
 
     MHD_stop_daemon (daemon);
 

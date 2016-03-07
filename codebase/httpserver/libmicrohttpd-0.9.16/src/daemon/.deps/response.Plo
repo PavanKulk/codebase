@@ -80,7 +80,7 @@ response.lo: response.c /usr/include/stdc-predef.h internal.h \
  /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/rpc/netdb.h \
  /usr/include/x86_64-linux-gnu/bits/netdb.h /usr/include/arpa/inet.h \
  ../../src/include/plibc/plibc.h ../../src/include/microhttpd.h \
- response.h
+ /usr/include/gnutls/gnutls.h /usr/include/gnutls/compat.h response.h
 
 /usr/include/stdc-predef.h:
 
@@ -299,5 +299,9 @@ internal.h:
 ../../src/include/plibc/plibc.h:
 
 ../../src/include/microhttpd.h:
+
+/usr/include/gnutls/gnutls.h:
+
+/usr/include/gnutls/compat.h:
 
 response.h:

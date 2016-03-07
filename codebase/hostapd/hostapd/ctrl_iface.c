@@ -1320,7 +1320,15 @@ static int hostapd_ctrl_iface_set(struct hostapd_data *hapd, char *cmd)
 	} else if (os_strcasecmp(cmd, "ext_eapol_frame_io") == 0) {
 		hapd->ext_eapol_frame_io = atoi(value);
 #endif /* CONFIG_TESTING_OPTIONS */
-	} else {
+	} else if(os_strcasecmp(cmd, "chan") == 0) {
+                 u8 chan = atoi(value);
+                 wpa_printf(MSG_INFO, "setting channel to %u", chan);
+                 hapd->iconf->channel = chan;
+                 if (hostapd_reload_iface(hapd->iface) < 0) {
+                         wpa_printf(MSG_ERROR, "Reloading of interface failed");
+                         return -1;
+                 }
+        } else {
 		struct sta_info *sta;
 		int vlan_id;
 
@@ -1375,7 +1383,15 @@ static int hostapd_ctrl_iface_get(struct hostapd_data *hapd, char *cmd,
 		if (os_snprintf_error(buflen, res))
 			return -1;
 		return res;
-	}
+	} else if (os_strcmp(cmd, "channel") == 0) {
+                wpa_printf(MSG_INFO, "get channel called");
+                int channel = (int) hapd->iconf->channel;
+                sprintf(buf, "%d", channel);
+                wpa_printf(MSG_INFO, "channel buffer = %s", buf);
+                return 1;
+                //if (os_snprintf_error(buflen, res))
+                //        return -1;
+        }
 
 	return -1;
 }
