@@ -1551,11 +1551,31 @@ int main(int argc, char *argv[])
 }
 
 void  SIGINT_handler(int sig)
-{
-     char *cmd = "SET CHAN 9";
+{	
+     char *cmd = "SET CHAN ";
+     char *finalCmd;
      char buf[2];
      size_t len;
      int ret;
+
+     //get channel from server start
+     key_t MyKey_chShare;
+     int ShmID_chShare;
+     char *ShmPTR_chShare;
+
+     MyKey_chShare   = 5555;
+     //ShmID   = shmget(MyKey, sizeof(pid_t), 0666);
+     if ((ShmID_chShare   = shmget(MyKey_chShare, sizeof(char), 0666)) < 0) {
+         perror("shmget");
+         exit(1);
+     }
+     ShmPTR_chShare  = (char *) shmat(ShmID_chShare, NULL, 0);
+     printf("Channel received from http server is %c\n", *ShmPTR_chShare);
+     finalCmd = malloc(strlen(cmd)+1);
+     strcpy(finalCmd, cmd);
+     strcat(finalCmd, ShmPTR_chShare);
+
+     //get channel from server end
 
      ctrl_ifname = "wlan0";
      len = sizeof(buf)-1;
@@ -1563,9 +1583,10 @@ void  SIGINT_handler(int sig)
      if (ctrl_conn) {
          printf("Connection established.\n");
      }
-     ret = wpa_ctrl_request(ctrl_conn, cmd, strlen(cmd), buf, &len,
+     printf("command generated = %s\n", finalCmd);
+     ret = wpa_ctrl_request(ctrl_conn, finalCmd, strlen(finalCmd), buf, &len,
                                hostapd_cli_msg_cb);
-     printf("set chan 9 command sent\n");
+     printf("set channel command sent\n");
      /*sleep(1);
      cmd = "GET channel";
      ret = wpa_ctrl_request(ctrl_conn, cmd, strlen(cmd), buf, &len,

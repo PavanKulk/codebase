@@ -30,6 +30,7 @@ int shmid;
 key_t key;
 char *shm, *s;
 size_t size;
+pid_t pid;
 
 static int
 answer_to_connection (void *cls, struct MHD_Connection *connection,
@@ -43,13 +44,39 @@ answer_to_connection (void *cls, struct MHD_Connection *connection,
     struct stat sbuf;
     char buffer[SHMSZ];
 
+    //share set channel variable start
+    int ShmID_chShare;
+    char *ShmPTR_chShare;
+    key_t MyKey_chShare;
+    MyKey_chShare = 5555;
+    ShmID_chShare   = shmget(MyKey_chShare, sizeof(char), IPC_CREAT | 0666);
+    ShmPTR_chShare  = (char *) shmat(ShmID_chShare, NULL, 0);
+    //share set channel variable end
+
+
     printf("answer to connection\n");
     printf("url = %s \n",url);
 
     if (0 != strcmp (method, "GET"))
       return MHD_NO;
 
-    //access shared memory<
+    if(!strcmp(url, "/get")) {
+        printf("GET channel called\n");
+        kill(pid, SIGQUIT);
+        printf("Channel get command Signal sent to hostapd_cli\n");
+    }
+
+    if(strstr(url, "set") != NULL) {
+        printf("SET channel called\n");
+        char channel = url[10];
+        *ShmPTR_chShare = channel;
+        printf("Sending signal to hostapd_cli...\n");
+        kill(pid, SIGINT);
+        printf("Channel set command Signal sent to hostapd_cli\n");
+    }
+
+    /*
+    //access shared memory start<
 
     key = 5678;
 
@@ -64,9 +91,6 @@ answer_to_connection (void *cls, struct MHD_Connection *connection,
     }
 
     printf("Received char string is %s\n",shm);
-    /*for (s = shm; *s != '\0'; s++)
-        putchar(*s);
-    putchar('\n');*/
 
     size = strlen(shm);
     printf("Performing memory copy from shm to buffer");
@@ -78,8 +102,8 @@ answer_to_connection (void *cls, struct MHD_Connection *connection,
 
     //printf("First character of the shared memory changed\n");
 
-    //access shared memory>
-    
+    //access shared memory end>
+    */
 
     if ( (-1 == (fd = open (FILENAME, O_RDONLY))) ||
          (0 != fstat (fd, &sbuf)) )
@@ -132,7 +156,7 @@ main ()
     if (NULL == daemon)
       return 1;
     
-    pid_t pid;
+    //pid_t pid;
     key_t MyKey;
     int ShmID;
     pid_t *ShmPTR;
@@ -149,12 +173,12 @@ main ()
     pid     = *ShmPTR;                
 
     printf("Received pid is %d\n",pid);
-    printf("Sending signal to hostapd_cli...\n");
+    /*printf("Sending signal to hostapd_cli...\n");
     kill(pid, SIGINT);
     printf("Channel set command Signal sent to hostapd_cli\n");
     sleep(1);
     kill(pid, SIGQUIT);
-    printf("Channel get command Signal sent to hostapd_cli\n");
+    printf("Channel get command Signal sent to hostapd_cli\n");*/
 
     (void) getchar ();
 
