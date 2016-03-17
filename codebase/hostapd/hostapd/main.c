@@ -601,7 +601,7 @@ static void get_params_handler(void *eloop_ctx, void *timeout_ctx)
 	//wpa_printf(MSG_INFO, "Pavan edit: last channel time = %u",interfaces->iface[0]->last_channel_time);
 	//wpa_printf(MSG_INFO, "Pavan edit: last channel time busy = %u",interfaces->iface[0]->last_channel_time_busy);
 	//wpa_printf(MSG_INFO, "Pavan edit: last channel utilization= %u",interfaces->iface[0]->channel_utilization);
-	eloop_register_timeout(5, 0, get_params_handler, interfaces, NULL);
+	//eloop_register_timeout(5, 0, get_params_handler, interfaces, NULL);
 
 }
 

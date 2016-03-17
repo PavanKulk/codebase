@@ -1457,10 +1457,10 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	/*if (daemonize && os_daemonize(pid_file))
+	if (daemonize && os_daemonize(pid_file))
 		return -1;
 
-	if (interactive)
+	/*if (interactive)
 		hostapd_cli_interactive();
 	else if (action_file)
 		hostapd_cli_action(ctrl_conn);
@@ -1542,7 +1542,7 @@ int main(int argc, char *argv[])
         //shared memory>
         
 
-        //hostapd_cli_list_interfaces(ctrl_conn);
+        hostapd_cli_list_interfaces(ctrl_conn);
 
 	os_free(ctrl_ifname);
 	eloop_destroy();
@@ -1552,11 +1552,12 @@ int main(int argc, char *argv[])
 
 void  SIGINT_handler(int sig)
 {	
-     char *cmd = "SET CHAN ";
-     char *finalCmd;
+     char *cmd = "CHAN_SWITCH 5 ";
+     char *finalCmd, charFreq[5];
      char buf[2];
      size_t len;
      int ret;
+     int freq;
 
      //get channel from server start
      key_t MyKey_chShare;
@@ -1571,9 +1572,12 @@ void  SIGINT_handler(int sig)
      }
      ShmPTR_chShare  = (char *) shmat(ShmID_chShare, NULL, 0);
      printf("Channel received from http server is %c\n", *ShmPTR_chShare);
+     freq = 2412 + 5*((int)(*ShmPTR_chShare) - '1');
+     snprintf(charFreq, sizeof charFreq, "%d", freq);
      finalCmd = malloc(strlen(cmd)+1);
      strcpy(finalCmd, cmd);
-     strcat(finalCmd, ShmPTR_chShare);
+     strcat(finalCmd, charFreq);
+     printf("Switch channel command = %s\n", finalCmd);
 
      //get channel from server end
 
@@ -1586,7 +1590,7 @@ void  SIGINT_handler(int sig)
      printf("command generated = %s\n", finalCmd);
      ret = wpa_ctrl_request(ctrl_conn, finalCmd, strlen(finalCmd), buf, &len,
                                hostapd_cli_msg_cb);
-     printf("set channel command sent\n");
+     printf("switch channel command sent\n");
      /*sleep(1);
      cmd = "GET channel";
      ret = wpa_ctrl_request(ctrl_conn, cmd, strlen(cmd), buf, &len,
@@ -1623,7 +1627,7 @@ void  SIGQUIT_handler(int sig)
                                hostapd_cli_msg_cb);
      printf("GET channel command sent\n");
      //buf[len] = '\0';
-     printf("Buffer received is: %s\n", buf);
+     printf("Channel in received buffer is: %c\n", buf[0]);
 
      //signal(sig, SIG_IGN);
      //printf("From SIGINT: just got a %d (SIGINT ^C) signal\n", sig); 
