@@ -1559,6 +1559,10 @@ void  SIGINT_handler(int sig)
      int ret;
      int freq;
 
+     if(sig == SIGINT) {
+         printf("SIGINT signal to switch channel received\n");
+     }
+
      //get channel from server start
      key_t MyKey_chShare;
      int ShmID_chShare;
@@ -1611,6 +1615,17 @@ void  SIGQUIT_handler(int sig)
      char buf[2];
      size_t len;
      int ret;
+     
+     int ShmID_getchar;
+     char *ShmPTR_getchar;
+     key_t MyKey_getchar;
+     MyKey_getchar = 7878;
+     ShmID_getchar = shmget(MyKey_getchar, sizeof(char), IPC_CREAT | 0666);
+     ShmPTR_getchar = (char *) shmat(ShmID_getchar, NULL, 0);
+
+     if(sig == SIGQUIT) {
+         printf("SIGQUIT signal to get channel received\n");
+     }
 
      ctrl_ifname = "wlan0";
      len = sizeof(buf)-1;
@@ -1628,9 +1643,13 @@ void  SIGQUIT_handler(int sig)
      printf("GET channel command sent\n");
      //buf[len] = '\0';
      printf("Channel in received buffer is: %c\n", buf[0]);
+ 
+     //Sharring channel with http server
+     *ShmPTR_getchar = buf[0];
+     //Sharing channel with http server end
 
      //signal(sig, SIG_IGN);
      //printf("From SIGINT: just got a %d (SIGINT ^C) signal\n", sig); 
-     signal(sig, SIGINT_handler);
+     signal(sig, SIGQUIT_handler);
 }
 

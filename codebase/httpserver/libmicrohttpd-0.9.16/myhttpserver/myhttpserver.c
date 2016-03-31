@@ -42,7 +42,7 @@ answer_to_connection (void *cls, struct MHD_Connection *connection,
     int fd;
     int ret;
     struct stat sbuf;
-    char buffer[SHMSZ];
+    char buffer[5];
 
     //share set channel variable start
     int ShmID_chShare;
@@ -61,9 +61,36 @@ answer_to_connection (void *cls, struct MHD_Connection *connection,
       return MHD_NO;
 
     if(!strcmp(url, "/get")) {
+        
+        char channel;
         printf("GET channel called\n");
-        kill(pid, SIGQUIT);
+        if(kill(pid, SIGQUIT) != 0) {
+            printf("Failed to send SIGQUIT signal\n");
+        }
         printf("Channel get command Signal sent to hostapd_cli\n");
+        sleep(1);
+
+        key_t MyKey_getchar;
+        int ShmID_getchar;
+        char *ShmPTR_getchar;
+
+        MyKey_getchar   = 7878;
+        //ShmID   = shmget(MyKey, sizeof(pid_t), 0666);
+        if ((ShmID_getchar   = shmget(MyKey_getchar, sizeof(char), 0666)) < 0) {
+            perror("shmget");
+            exit(1);
+        }
+
+        ShmPTR_getchar = (char *) shmat(ShmID_getchar, NULL, 0);
+        channel = *ShmPTR_getchar;
+        printf("Received channel from hostapd = %c\n", channel);
+        buffer[0] = channel;
+        response = MHD_create_response_from_data(3, "OK\n", MHD_NO, MHD_NO);
+        //response =
+        //  MHD_create_response_from_fd_at_offset (sbuf.st_size, fd, 0);
+        //MHD_add_response_header (response, "Content-Type", MIMETYPE);
+        //ret = MHD_queue_response (connection, MHD_HTTP_OK, response);
+        //MHD_destroy_response (response);
     }
 
     if(strstr(url, "set") != NULL) {
@@ -71,8 +98,11 @@ answer_to_connection (void *cls, struct MHD_Connection *connection,
         char channel = url[10];
         *ShmPTR_chShare = channel;
         printf("Sending signal to hostapd_cli...\n");
-        kill(pid, SIGINT);
+        if(kill(pid, SIGINT) != 0) {
+            printf("Failed to send SIGINT signal\n");
+        }
         printf("Channel set command Signal sent to hostapd_cli\n");
+        response = MHD_create_response_from_data(3, "OK\n", MHD_NO, MHD_NO);
     }
 
     /*
@@ -105,10 +135,10 @@ answer_to_connection (void *cls, struct MHD_Connection *connection,
     //access shared memory end>
     */
 
-    if ( (-1 == (fd = open (FILENAME, O_RDONLY))) ||
+    /*if ( (-1 == (fd = open (FILENAME, O_RDONLY))) ||
          (0 != fstat (fd, &sbuf)) )
     {
-        /* error accessing file */
+      
         if (fd != -1)
 	  (void) close (fd);
         const char *errorstr =
@@ -135,10 +165,9 @@ answer_to_connection (void *cls, struct MHD_Connection *connection,
 
     //response =
     //  MHD_create_response_from_fd_at_offset (sbuf.st_size, fd, 0);
-    MHD_add_response_header (response, "Content-Type", MIMETYPE);
+    MHD_add_response_header (response, "Content-Type", MIMETYPE);*/
     ret = MHD_queue_response (connection, MHD_HTTP_OK, response);
     MHD_destroy_response (response);
-
     return ret;
 }
 
