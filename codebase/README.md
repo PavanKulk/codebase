@@ -32,12 +32,15 @@ Running and checking the output :-
 hostapd :-
  - Move to hostapd folder
  - Run hostapd hostapd-minimal.conf
+ - Run hostapd_cli
 
 httpserver :-
  - Move to libmicrohttpd-0.9.16/myhttpserver/ folder
  - Run "gcc myhttpserver.c -o myhttpserver -I /root/codebase/codebase/httpServer/libmicrohttpd-0.9.46/src/include/ -L /root/codebase/codebase/httpServer/libmicrohttpd-0.9.46/doc/ -lmicrohttpd"
- - Run ./httpserver
- - Run "curl -H "Accept: text/plain" -H "Content-Type: text/plain" -X GET http://localhost:8888/"
- - Verify output
+ - Run ./myhttpserver
+ - Open another terminal to run HTTP GET and SET
+ - HTTP GET:- curl -H "Accept: text/plain" -H "Content-Type: text/plain" -X GET http://localhost:8888/get
+ - HTTP SET:- curl -H "Accept: text/plain" -H "Content-Type: text/plain" -X GET http://localhost:8888/set_chan=5
+ 
  
 
