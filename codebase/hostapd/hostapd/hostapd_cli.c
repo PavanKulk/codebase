@@ -19,9 +19,6 @@
 #include "utils/edit.h"
 #include "common/version.h"
 
-
-#define SHMSZ 4096
-
 void  SIGINT_handler(int);
 void SIGQUIT_handler(int);   
 
@@ -1459,62 +1456,7 @@ int main(int argc, char *argv[])
 
 	if (daemonize && os_daemonize(pid_file))
 		return -1;
-
-	/*if (interactive)
-		hostapd_cli_interactive();
-	else if (action_file)
-		hostapd_cli_action(ctrl_conn);
-	else
-         	wpa_request(ctrl_conn, argc - optind, &argv[optind]);*/
-
-
-        /*
-        //<shared memory implementation
-        //sharing channel information start
-        char ch;
-        int shmid;
-        key_t key;
-        char *shm, *s;
-        char buf[4096];
-        size_t len;
-        int ret;
-        char *cmd = "STATUS";
-  
-        key = 5678;
-
-        printf("Variables initialized\n");
-
-        if ((shmid = shmget(key, SHMSZ, IPC_CREAT | 0666)) < 0) {
-            perror("shmget");
-            exit(1);
-        }
-
-        printf("Segment created\n");
-
-
-        if ((shm = shmat(shmid, NULL, 0)) == (char *) -1) {
-            perror("shmat");
-            exit(1);
-        }
-        printf("Segment attached to dataspace\n");
-
-        s = shm;
-
-        printf("s assigned to shm\n");
-
-        len = sizeof(buf)-1;
-        ret = wpa_ctrl_request(ctrl_conn, cmd, strlen(cmd), buf, &len,
-			       hostapd_cli_msg_cb);
-        buf[len] = '\0';
-        printf("Buffered received is: %s\n", buf);
-        //printf("%s", buf);
-
-        s = memcpy(s, buf, len);
-        s[len] = '\0';
-        printf("Copied buffer = %s", s);
-        //sharing channel information end
-        */
-
+      
         //sharing pid start
         int ShmID;      
         pid_t *ShmPTR;
@@ -1536,18 +1478,17 @@ int main(int argc, char *argv[])
             exit(1);
         }
 
-        printf("Waiting for the signals to arrive\n");
+        printf("Waiting for the signals from HTTP server to arrive\n");
         while (1);
 
-        //shared memory>
-        
-
+        /*..derecated from the original implementation..
         hostapd_cli_list_interfaces(ctrl_conn);
 
 	os_free(ctrl_ifname);
 	eloop_destroy();
 	hostapd_cli_cleanup();
 	return 0;
+        */
 }
 
 void  SIGINT_handler(int sig)
@@ -1563,27 +1504,27 @@ void  SIGINT_handler(int sig)
          printf("SIGINT signal to switch channel received\n");
      }
 
-     //get channel from server start
+     //get channel from http server
      key_t MyKey_chShare;
      int ShmID_chShare;
      char *ShmPTR_chShare;
-
      MyKey_chShare   = 5555;
-     //ShmID   = shmget(MyKey, sizeof(pid_t), 0666);
      if ((ShmID_chShare   = shmget(MyKey_chShare, sizeof(char), 0666)) < 0) {
          perror("shmget");
          exit(1);
      }
      ShmPTR_chShare  = (char *) shmat(ShmID_chShare, NULL, 0);
      printf("Channel received from http server is %c\n", *ShmPTR_chShare);
+
+     //calculate the frequency to set in the channel switch command 
      freq = 2412 + 5*((int)(*ShmPTR_chShare) - '1');
      snprintf(charFreq, sizeof charFreq, "%d", freq);
+
+     //generate command for channel switch
      finalCmd = malloc(strlen(cmd)+1);
      strcpy(finalCmd, cmd);
      strcat(finalCmd, charFreq);
      printf("Switch channel command = %s\n", finalCmd);
-
-     //get channel from server end
 
      ctrl_ifname = "wlan0";
      len = sizeof(buf)-1;
@@ -1595,16 +1536,7 @@ void  SIGINT_handler(int sig)
      ret = wpa_ctrl_request(ctrl_conn, finalCmd, strlen(finalCmd), buf, &len,
                                hostapd_cli_msg_cb);
      printf("switch channel command sent\n");
-     /*sleep(1);
-     cmd = "GET channel";
-     ret = wpa_ctrl_request(ctrl_conn, cmd, strlen(cmd), buf, &len,
-                               hostapd_cli_msg_cb);
-     printf("GET channel command sent\n");
-     //buf[len] = '\0';
-     printf("Buffer received is: %s\n", buf);*/
-
-     //signal(sig, SIG_IGN);
-     //printf("From SIGINT: just got a %d (SIGINT ^C) signal\n", sig); 
+ 
      signal(sig, SIGINT_handler);
 }
 
@@ -1633,23 +1565,14 @@ void  SIGQUIT_handler(int sig)
      if (ctrl_conn) {
          printf("Connection established.\n");
      }
-     /*ret = wpa_ctrl_request(ctrl_conn, cmd, strlen(cmd), buf, &len,
-                               hostapd_cli_msg_cb);
-     printf("set chan 9 command sent\n");
-     sleep(1);
-     cmd = "GET channel";*/
      ret = wpa_ctrl_request(ctrl_conn, cmd, strlen(cmd), buf, &len,
                                hostapd_cli_msg_cb);
      printf("GET channel command sent\n");
-     //buf[len] = '\0';
      printf("Channel in received buffer is: %c\n", buf[0]);
  
      //Sharring channel with http server
      *ShmPTR_getchar = buf[0];
-     //Sharing channel with http server end
 
-     //signal(sig, SIG_IGN);
-     //printf("From SIGINT: just got a %d (SIGINT ^C) signal\n", sig); 
      signal(sig, SIGQUIT_handler);
 }
 

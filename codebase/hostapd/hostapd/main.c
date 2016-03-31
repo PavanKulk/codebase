@@ -742,7 +742,7 @@ int main(int argc, char *argv[])
 			       hostapd_periodic, &interfaces, NULL);
 
 	/*Timeout event is triggered after 5 seconds of start of hostapd. The parameters are pulled after the event is triggered in the handler*/
-        eloop_register_timeout(5, 0, get_params_handler, &interfaces, NULL);
+        eloop_register_timeout(2, 0, get_params_handler, &interfaces, NULL);
 
 
 	if (fst_global_init()) {
