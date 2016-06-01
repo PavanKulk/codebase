@@ -123,7 +123,7 @@ main ()
     pid     = *ShmPTR;                
     printf("Received pid is %d\n",pid);
 
-    (void) getchar ();
+    while(1);
 
     MHD_stop_daemon (daemon);
 
