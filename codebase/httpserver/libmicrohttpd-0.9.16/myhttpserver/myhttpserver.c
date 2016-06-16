@@ -81,8 +81,9 @@ answer_to_connection (void *cls, struct MHD_Connection *connection,
 
         printf("SET channel called\n");
 
-        char channel = url[10];
-        *ShmPTR_chShare = channel;
+        char channel[2];
+        channel[0] = url[10]; channel[1] = url[11];
+        ShmPTR_chShare[0] = channel[0]; ShmPTR_chShare[1] = channel[1];
         printf("Sending signal to hostapd_cli...\n");
         if(kill(pid, SIGINT) != 0) {
             printf("Failed to send SIGINT signal\n");

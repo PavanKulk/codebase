@@ -1514,10 +1514,17 @@ void  SIGINT_handler(int sig)
          exit(1);
      }
      ShmPTR_chShare  = (char *) shmat(ShmID_chShare, NULL, 0);
-     printf("Channel received from http server is %c\n", *ShmPTR_chShare);
+     printf("Channel received from http server is %s\n", ShmPTR_chShare);
 
      //calculate the frequency to set in the channel switch command 
-     freq = 2412 + 5*((int)(*ShmPTR_chShare) - '1');
+     int channel;
+     if(ShmPTR_chShare[0] == '0') {
+         freq = 2412 + 5*((int)(ShmPTR_chShare[1]) - '1');
+     }
+     else {
+         sscanf(ShmPTR_chShare, "%d", &channel);
+         freq = 2412 + 5*(channel-1);
+     }
      snprintf(charFreq, sizeof charFreq, "%d", freq);
 
      //generate command for channel switch
