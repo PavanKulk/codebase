@@ -592,9 +592,9 @@ static void get_params_handler(void *eloop_ctx, void *timeout_ctx)
 	wpa_printf(MSG_INFO, "Pavan edit: main.c: get_params_handler called");
 	wpa_printf(MSG_INFO, "Pavan edit: interfaces.count = %d",interfaces->count);
 	wpa_printf(MSG_INFO, "Pavan edit: config name = %s",interfaces->iface[0]->config_fname);
-	wpa_printf(MSG_INFO, "Pavan edit: freq = %d",interfaces->iface[0]->freq);
-	wpa_printf(MSG_INFO, "Pavan edit: rate = %d",interfaces->iface[0]->current_rates->rate);
-	wpa_printf(MSG_INFO, "Pavan edit: number of bss = %d",interfaces->iface[0]->num_bss);
+	//wpa_printf(MSG_INFO, "Pavan edit: freq = %d",interfaces->iface[0]->freq);
+	//wpa_printf(MSG_INFO, "Pavan edit: rate = %d",interfaces->iface[0]->current_rates->rate);
+	//wpa_printf(MSG_INFO, "Pavan edit: number of bss = %d",interfaces->iface[0]->num_bss);
 	//wpa_printf(MSG_INFO, "Pavan edit: iface = %s",interfaces->iface[0]->bss[0]->iface);
 	//wpa_printf(MSG_INFO, "Pavan edit: number of entries in the ap list = %d",interfaces->iface[0]->num_ap);
 	//wpa_printf(MSG_INFO, "Pavan edit: channels surveyed = %d",interfaces->iface[0]->chans_surveyed);
